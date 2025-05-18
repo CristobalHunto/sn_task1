@@ -15,20 +15,19 @@ Type min_max_sum(vector<Type> arr)
 
     if (min_it == arr.end() || max_it == arr.end())
         throw "Vecrot is empty!";
+        
+    if (min_it == max_it)
+        return 0;
 
-    double sum = 0; // используем long double для предотвращения переполнения с плавающей точкой
-    int minIndex = distance(arr.begin(), min_it);
-    int maxIndex = distance(arr.begin(), max_it);
-    int start = min(minIndex, maxIndex);
-    int end = max(minIndex, maxIndex);
+    Type sum = 0;
+//    int minIndex = distance(arr.begin(), min_it);
+//    int maxIndex = distance(arr.begin(), max_it);
 
-    for (int i = start + 1; i < end; ++i)
-    {
-        if (arr[i] < 0)
-        {
-            sum += arr[i];
-        }
-    }
+    if (min_it < max_it)
+        sum = std::accumulate(min_it + 1, max_it, 0);
+    else
+        sum = std::accumulate(max_it + 1, min_it, 0);
+
 
     return sum;
 }
@@ -39,13 +38,25 @@ int main()
     vector<double> arr;
 
     // test
-    if (min_max_sum(vector<double>({0., -2., -1., -1., 3., 8.})) != -2.)
+    if (min_max_sum(vector<double>({0., -2., -1., -1., 3., 8.})) != 1.)
+    {
+        cout << "Test double is invalid." << endl;
+        return 1;
+    }
+
+    if (min_max_sum(vector<int>({0, -2, -1, -1, -3, -1})) != -4)
     {
         cout << "Test double is invalid." << endl;
         return 1;
     }
 
     if (min_max_sum(vector<int>({-9, -8, -7, -6, -9})) != -15)
+    {
+        cout << "Test int is invalid." << endl;
+        return 1;
+    }
+
+        if (min_max_sum(vector<int>({-1})) != -0)
     {
         cout << "Test int is invalid." << endl;
         return 1;
