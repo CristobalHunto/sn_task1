@@ -20,8 +20,6 @@ Type min_max_sum(vector<Type> arr)
         return 0;
 
     Type sum = 0;
-//    int minIndex = distance(arr.begin(), min_it);
-//    int maxIndex = distance(arr.begin(), max_it);
 
     if (min_it < max_it)
         sum = std::accumulate(min_it + 1, max_it, 0);
