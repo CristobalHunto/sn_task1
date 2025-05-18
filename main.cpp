@@ -21,9 +21,9 @@ Type min_max_sum(vector<Type> arr)
     Type sum = 0;
 
     if (min_it < max_it)
-        sum = std::accumulate(min_it + 1, max_it, 0);
+        sum = std::accumulate(min_it + 1, max_it, Type(0));
     else
-        sum = std::accumulate(max_it + 1, min_it, 0);
+        sum = std::accumulate(max_it + 1, min_it, Type(0));
 
 
     return sum;
