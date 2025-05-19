@@ -1,9 +1,61 @@
+
+
+
 #include <iostream>
+using namespace std;
+
+#define BIG_DATA
+#ifdef BIG_DATA
+
+template <typename Type>
+auto min_max_sum(Type arr)
+{
+    if (arr.empty())
+        throw "Vector is empty!";
+
+    using type_val =  typename Type::value_type;
+
+    type_val max_val = *arr.begin();
+    type_val min_val = max_val;
+    type_val sum = type_val(0), acum = type_val(0);
+    size_t max_pos = 0, min_pos = 0, pos = 0;
+
+    for(auto a : arr)
+    {
+        if (a > max_val)
+        {
+            if(max_pos < min_pos)
+                sum = acum - sum - min_val;
+            else
+                sum = acum;
+            acum = sum;
+            max_pos = pos;
+            max_val = a;
+        }
+        if (a < min_val)
+        {
+            if(min_pos < max_pos)
+                sum = acum - sum - max_val;
+            else
+                sum = acum;
+            acum = sum;
+            min_pos = pos;
+            min_val = a;
+        }
+
+        if (pos > 0)
+            acum += a;
+        pos++;
+
+    }
+
+    return sum;
+}
+
+#else
 #include <vector>
 #include <numeric>
 #include <algorithm> // для min и max
-
-using namespace std;
 
 template <typename Type>
 Type min_max_sum(vector<Type> arr)
@@ -13,7 +65,7 @@ Type min_max_sum(vector<Type> arr)
     auto max_it = max_element(arr.begin(), arr.end());
 
     if (min_it == arr.end() || max_it == arr.end())
-        throw "Vecrot is empty!";
+        throw "Vector is empty!";
         
     if (min_it == max_it)
         return 0;
@@ -29,6 +81,12 @@ Type min_max_sum(vector<Type> arr)
     return sum;
 }
 
+#endif
+
+#include <vector>
+#include <list>
+
+
 int main()
 {
     int n;
@@ -37,25 +95,31 @@ int main()
     // test
     if (min_max_sum(vector<double>({0., -2., -1., -1., 3., 8.})) != 1.)
     {
-        cout << "Test double is invalid." << endl;
+        cout << "Test1 double is invalid." << endl;
         return 1;
     }
 
-    if (min_max_sum(vector<int>({0, -2, -1, -1, -3, -1})) != -4)
+    if (min_max_sum(vector<int>({0, -2, -1, -1, -3, -1, 7})) != -1)
     {
-        cout << "Test double is invalid." << endl;
+        cout << "Test2 double is invalid." << endl;
         return 1;
     }
 
     if (min_max_sum(vector<int>({-9, -8, -7, -6, -9})) != -15)
     {
-        cout << "Test int is invalid." << endl;
+        cout << "Test3 int is invalid." << endl;
         return 1;
     }
 
-        if (min_max_sum(vector<int>({-1})) != -0)
+    if (min_max_sum(vector<int>({-1})) != -0)
     {
-        cout << "Test int is invalid." << endl;
+        cout << "Test4 int is invalid." << endl;
+        return 1;
+    }
+
+    if (min_max_sum(list<int>({-1, -2, 5, 6, 8})) != 11)
+    {
+        cout << "Test5 int is invalid." << endl;
         return 1;
     }
 
